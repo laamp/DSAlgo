@@ -87,12 +87,6 @@ function pow(base, exponent) {
   }
 }
 
-/*
-2^0 = 1
-2^-1 = 1 / 2 = .5
-2^-2 = 
-*/
-
 // A 1-dimensional array is also known as a flattened array.
 // Write a method, flatten(data), that accepts a single argument. The
 // method should take in an array of any dimension and return the flattened
@@ -122,7 +116,17 @@ function pow(base, exponent) {
 //     2-dimensional array: [['some data']]
 //     3-dimensional array: [[['some data']]]
 function flatten(data) {
+  if (!Array.isArray(data)) return [data];
 
+  let newArr = [];
+  for (let i = 0; i < data.length; i++) {
+    if (Array.isArray(data[i])) {
+      newArr = newArr.concat(flatten(data[i]));
+    } else {
+      newArr = newArr.concat(data[i]);
+    }
+  }
+  return newArr;
 }
 
 // Write a function, fileFinder(directories, targetFile), that accepts an object representing directories and a string respresenting a filename.
@@ -165,7 +169,13 @@ function flatten(data) {
 // fileFinder(desktop, 'everlong.flac');            // => true
 // fileFinder(desktop, 'sequoia.jpeg');             // => false
 function fileFinder(directories, targetFile) {
+  for (let k in directories) {
+    if (k === targetFile || fileFinder(directories[k], targetFile)) {
+      return true;
+    }
+  }
 
+  return false;
 }
 
 
